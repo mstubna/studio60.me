@@ -1,0 +1,45 @@
+{
+  "name": "studio60.me",
+  "private": true,
+  "version": "0.0.0",
+  "dependencies": {
+    "@material-ui/core": "^4.10.1",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/styles": "^4.10.0",
+    "faker": "^4.1.0",
+    "gatsby": "^2.22.15",
+    "gatsby-plugin-manifest": "^2.4.17",
+    "gatsby-plugin-material-ui": "^2.1.9",
+    "gatsby-plugin-react-helmet": "^3.3.2",
+    "gatsby-plugin-s3": "^0.3.3",
+    "gatsby-source-filesystem": "^2.3.8",
+    "gatsby-transformer-csv": "^2.3.10",
+    "lodash": "^4.17.15",
+    "luxon": "^1.24.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-full-screen": "^0.3.1",
+    "react-helmet": "^6.0.0",
+    "typeface-montserrat": "0.0.75",
+    "typeface-open-sans": "0.0.75"
+  },
+  "devDependencies": {
+    "babel-preset-gatsby": "^0.4.9",
+    "prettier": "2.0.5"
+  },
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop -H 0.0.0.0",
+    "lint": "prettier --write \"**/*.{js,jsx,json,md,css}\"",
+    "start": "npm run develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "deploy": "env $(cat .env) gatsby-plugin-s3 deploy --yes",
+    "build-deploy": "npm run clean; npm run build; npm run deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mstubna/studio60.me"
+  }
+}

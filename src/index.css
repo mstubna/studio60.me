@@ -1,0 +1,15 @@
+@font-face {
+  font-family: 'Neusa-Bold';
+  src: url('./fonts/Neusa-Bold.woff2') format('woff2'),
+    url('./fonts/Neusa-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Fontopo';
+  src: url('./fonts/fontoponeutral-regular.woff2') format('woff2'),
+    url('./fonts/fontoponeutral-regular.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+}

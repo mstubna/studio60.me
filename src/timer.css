@@ -1,0 +1,15 @@
+@font-face {
+  font-family: Dotmatrix;
+  src: url('./fonts/Dotmatrix.woff2') format('woff2'),
+    url('./fonts/Dotmatrix.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: Digit;
+  src: url('./fonts/Digit.woff2') format('woff2'),
+    url('./fonts/Digit.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+}
