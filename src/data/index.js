@@ -6,7 +6,7 @@ const hashStr = (str) => {
     i,
     chr,
     len
-  if (str.length === 0) return hash
+  if (!str) return hash
   for (i = 0, len = str.length; i < len; i++) {
     chr = str.charCodeAt(i)
     hash = (hash << 5) - hash + chr
@@ -39,13 +39,23 @@ const getStudio60Character = (name, characters, questions, answers) => {
     })
   })
   const minPenalty = min(penalties)
-  const possibleCharacters = characters.filter(
-    (_, index) => penalties[index] === minPenalty
-  )
+  const possibleCharacters = characters.filter((_, index) => penalties[index] === minPenalty)
   console.log(possibleCharacters.map((c) => c.Character))
 
   faker.seed(hashStr(name))
   return faker.random.arrayElement(possibleCharacters)
 }
 
-export { parseData, getStudio60Character }
+const getStudio60CharacterByIndex = (characters, index) => {
+  return characters[index]
+}
+
+const getRandomQuote = (character) => {
+  if (!character || !character.Quotes) {
+    return ''
+  }
+  faker.seed(Math.random() * 1000)
+  return faker.random.arrayElement(character.Quotes.split('\n'))
+}
+
+export { parseData, getStudio60Character, getStudio60CharacterByIndex, getRandomQuote }

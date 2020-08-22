@@ -1,5 +1,4 @@
 import 'typeface-montserrat'
-import 'typeface-open-sans'
 import React, { useState, useEffect, useRef } from 'react'
 import { Helmet } from 'react-helmet'
 import { Button, CssBaseline, Grid, Typography } from '@material-ui/core'
@@ -9,11 +8,12 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from '@material-ui/core/styles'
-import FullscreenIcon from '@material-ui/icons/Fullscreen'
-import FullscreenExitIcon from '@material-ui/icons/FullscreenExit'
+import HomeIcon from '@material-ui/icons/HomeOutlined'
+import FullscreenIcon from '@material-ui/icons/FullscreenOutlined'
+import FullscreenExitIcon from '@material-ui/icons/FullscreenExitOutlined'
 import { Duration } from 'luxon'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
-import '../timer.css'
+import '../index.css'
 
 const digitFont = {
   fontFamily: 'Digit',
@@ -23,6 +23,7 @@ const dotmatrixFont = {
   fontFamily: 'Dotmatrix',
   color: '#fff555',
 }
+
 let theme = createMuiTheme({
   typography: {
     fontSize: 30,
@@ -156,6 +157,7 @@ const useAnimationFrame = (callback) => {
   useEffect(() => {
     requestRef.current = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(requestRef.current)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 }
 
@@ -171,6 +173,10 @@ const TimerPage = () => {
   useAnimationFrame((deltaTime) => {
     setElapsed((prevElapsed) => prevElapsed + deltaTime)
   })
+
+  const handleHome = () => {
+    window.location = '/'
+  }
 
   const fullScreenHandle = useFullScreenHandle()
 
@@ -203,28 +209,13 @@ const TimerPage = () => {
       <CssBaseline />
       <FullScreen handle={fullScreenHandle}>
         <div style={{ overflow: 'hidden', minWidth: 1024 }}>
-          <Grid
-            container
-            item
-            direction='column'
-            justify='center'
-            alignItems='center'
-            xs={12}
-          >
+          <Grid container item direction='column' justify='center' alignItems='center' xs={12}>
             <div className={classes.quoteContainer}>
               <Typography className={classes.quote}>{quote}</Typography>
-              <Typography className={classes.quoteAuthor}>
-                {quoteAuthor}
-              </Typography>
+              <Typography className={classes.quoteAuthor}>{quoteAuthor}</Typography>
             </div>
             <Typography className={classes.timeHeader}>TIME ELAPSED</Typography>
-            <Grid
-              container
-              item
-              direction='row'
-              justify='center'
-              alignItems='center'
-            >
+            <Grid container item direction='row' justify='center' alignItems='center'>
               <div className={classes.sectionColumn}>
                 <Typography className={classes.timeLabel}>HOURS</Typography>
                 <Typography className={classes.time}>{hours}</Typography>
@@ -248,21 +239,16 @@ const TimerPage = () => {
             alignItems='center'
             xs={12}
           >
+            <Button className={classes.button} color='secondary' onClick={handleHome}>
+              <HomeIcon />
+            </Button>
             <Button
               className={classes.button}
               color='secondary'
               title='Fullscreen'
-              onClick={
-                fullScreenHandle.active
-                  ? fullScreenHandle.exit
-                  : fullScreenHandle.enter
-              }
+              onClick={fullScreenHandle.active ? fullScreenHandle.exit : fullScreenHandle.enter}
             >
-              {fullScreenHandle.active ? (
-                <FullscreenExitIcon />
-              ) : (
-                <FullscreenIcon />
-              )}
+              {fullScreenHandle.active ? <FullscreenExitIcon /> : <FullscreenIcon />}
             </Button>
             <Button
               className={classes.button}
@@ -272,11 +258,7 @@ const TimerPage = () => {
             >
               Reset
             </Button>
-            <Button
-              className={classes.button}
-              color='secondary'
-              onClick={handleStartStop}
-            >
+            <Button className={classes.button} color='secondary' onClick={handleStartStop}>
               {running ? 'Pause' : 'Start'}
             </Button>
           </Grid>
