@@ -4,26 +4,57 @@ import { Link } from 'gatsby'
 import { Helmet } from 'react-helmet'
 import { CssBaseline, Grid, Typography } from '@material-ui/core'
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
+import { fade } from '@material-ui/core/styles/colorManipulator'
 import Header from '../components/header'
 import theme from '../components/theme'
 import icon from '../images/icon.png'
+import personalityQuizImage from '../images/personality-quiz.jpg'
+import timeclockImage from '../images/timeclock.jpg'
+import waterCoolerImage from '../images/water-cooler.jpg'
 import '../index.css'
 
 const useStyles = makeStyles({
   spacer: {
-    margin: '20px 0',
+    margin: '10px 0',
+  },
+  mainImage: {
+    display: 'flex',
+    minHeight: 200,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    borderRadius: 3,
+  },
+  mainImageOverlay: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: fade(theme.palette.primary.main, 0.7),
+    padding: 10,
+    borderRadius: 3,
+    '&:hover': {
+      background: fade(theme.palette.primary.main, 0.5),
+    },
   },
   mainLink: {
-    fontWeight: 'bold',
+    position: 'relative',
     margin: '12px 0',
+    height: '100%',
+    width: '100%',
     textDecoration: 'none',
-    color: theme.palette.primary.main,
+    color: 'white',
     '&:hover': {
       color: theme.palette.secondary.main,
     },
   },
+  mainLinkFont: {
+    fontWeight: 'bold',
+  },
   linkGroup: {
-    marginTop: 60,
+    marginTop: 20,
     marginBottom: 30,
   },
   linkFont: {
@@ -40,7 +71,7 @@ const useStyles = makeStyles({
     },
   },
   span: {
-    margin: '0 6px',
+    marginLeft: 6,
   },
 })
 
@@ -65,15 +96,48 @@ const IndexPage = () => {
         <Grid container direction='column' justify='center' alignItems='center'>
           <Header className={classes.header} showQuote={false} />
           <div className={classes.spacer} />
-          <Link className={classes.mainLink} to='/water-cooler'>
-            Water cooler
-          </Link>
-          <Link className={classes.mainLink} to='/personality-quiz'>
-            Personality quiz
-          </Link>
-          <Link className={classes.mainLink} to='/timer'>
-            Timeclock
-          </Link>
+          <Grid container item xs={10} sm={8} md={6} lg={4}>
+            <Link className={classes.mainLink} to='/water-cooler'>
+              <div
+                className={classes.mainImage}
+                style={{ backgroundImage: `url(${waterCoolerImage})` }}
+              >
+                <div className={classes.mainImageOverlay}>
+                  <Typography variant='h5' align='center' className={classes.mainLinkFont}>
+                    Water cooler
+                  </Typography>
+                </div>
+              </div>
+            </Link>
+          </Grid>
+          <Grid container item xs={10} sm={8} md={6} lg={4}>
+            <Link className={classes.mainLink} to='/personality-quiz'>
+              <div
+                className={classes.mainImage}
+                style={{ backgroundImage: `url(${personalityQuizImage})` }}
+              >
+                <div className={classes.mainImageOverlay}>
+                  <Typography variant='h5' align='center' className={classes.mainLinkFont}>
+                    Personality quiz
+                  </Typography>
+                </div>
+              </div>
+            </Link>
+          </Grid>
+          <Grid container item xs={10} sm={8} md={6} lg={4}>
+            <Link className={classes.mainLink} to='/timer'>
+              <div
+                className={classes.mainImage}
+                style={{ backgroundImage: `url(${timeclockImage})` }}
+              >
+                <div className={classes.mainImageOverlay}>
+                  <Typography variant='h5' align='center' className={classes.mainLinkFont}>
+                    Timeclock
+                  </Typography>
+                </div>
+              </div>
+            </Link>
+          </Grid>
         </Grid>
         <Grid
           className={classes.linkGroup}
@@ -96,7 +160,7 @@ const IndexPage = () => {
               </a>
             </span>
             <br />
-            Past show name generators:
+            Past shows:
             <span className={classes.span}>
               <a className={classes.link} href='https://biglake.me'>
                 BigLake.me

@@ -19,10 +19,12 @@ const parseData = (data) => {
   const {
     allCharactersCsv: { edges: characters },
     allQuestionsCsv: { edges: questions },
+    allLocationsCsv: { edges: locations },
   } = data
   return {
     characters: characters.map((c) => c.node),
     questions: questions.map((q) => q.node),
+    locations: locations.map((l) => l.node.Location),
   }
 }
 
@@ -58,4 +60,24 @@ const getRandomQuote = (character) => {
   return faker.random.arrayElement(character.Quotes.split('\n'))
 }
 
-export { parseData, getStudio60Character, getStudio60CharacterByIndex, getRandomQuote }
+const getSketchName = (name, christian, science, locations) => {
+  if (christian > science) {
+    return { part1: 'Nicholas Cage meets', part2: name }
+  }
+  return { part1: 'Peripheral Vision Man goes to', part2: getRandomLocation(name, locations) }
+}
+
+const getRandomLocation = (name, locations) => {
+  faker.seed(hashStr(name))
+  return faker.random.arrayElement(locations)
+}
+
+export {
+  getStudio60Character,
+  getStudio60CharacterByIndex,
+  getRandomLocation,
+  getRandomQuote,
+  getSketchName,
+  hashStr,
+  parseData,
+}

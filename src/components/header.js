@@ -32,6 +32,7 @@ const styles = (theme) => ({
     },
   },
   title2Font: {
+    color: theme.palette.primary.main,
     fontFamily: 'Fontopo',
     marginLeft: -4,
     [theme.breakpoints.only('xs')]: {
@@ -39,6 +40,7 @@ const styles = (theme) => ({
     },
   },
   title3Font: {
+    color: theme.palette.primary.main,
     marginTop: '7%',
     fontWeight: 600,
     marginRight: 20,

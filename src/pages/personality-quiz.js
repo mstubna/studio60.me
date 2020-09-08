@@ -456,5 +456,12 @@ export const query = graphql`
         }
       }
     }
+    allLocationsCsv {
+      edges {
+        node {
+          Location
+        }
+      }
+    }
   }
 `
