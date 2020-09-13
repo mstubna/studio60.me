@@ -64,11 +64,14 @@ const getSketchName = (name, christian, science, locations) => {
   if (christian > science) {
     return { part1: 'Nicholas Cage meets', part2: name }
   }
-  return { part1: 'Peripheral Vision Man goes to', part2: getRandomLocation(name, locations) }
+  return {
+    part1: 'Peripheral Vision Man goes to',
+    part2: getRandomLocation(name, science, locations),
+  }
 }
 
-const getRandomLocation = (name, locations) => {
-  faker.seed(hashStr(name))
+const getRandomLocation = (name, science, locations) => {
+  faker.seed(hashStr(`${name}${science}`))
   return faker.random.arrayElement(locations)
 }
 

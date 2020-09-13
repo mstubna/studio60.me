@@ -15,19 +15,19 @@ import {
   Typography,
 } from '@material-ui/core'
 import { makeStyles, ThemeProvider, duration } from '@material-ui/core/styles'
+import { isShowtime } from '../utilities'
 import { useQueryParam, StringParam } from 'use-query-params'
 import { isEmpty } from 'lodash'
 import Header from '../components/header'
 import theme from '../components/theme'
 import icon from '../images/icon.png'
-import placeholder from '../images/placeholder.png'
 import {
   parseData,
   getStudio60Character,
   getStudio60CharacterByIndex,
   getRandomQuote,
 } from '../data'
-import { screencaptures } from '../images/characterImages'
+import { images } from '../images/characterImages'
 import '../index.css'
 
 const useStyles = makeStyles({
@@ -121,6 +121,11 @@ const usePrevious = (value) => {
 
 const PersonalityQuizPage = (props) => {
   const classes = useStyles()
+  useEffect(() => {
+    if (!isShowtime()) {
+      window.location = '/'
+    }
+  }, [])
   const { characters, questions } = parseData(props.data)
   const [queryId, setQueryId] = useQueryParam('id', StringParam)
   const [step, setStep] = useState(0)
@@ -185,7 +190,7 @@ const PersonalityQuizPage = (props) => {
       <div
         className={classes.gridImageItem}
         style={{
-          backgroundImage: `url(${screencaptures[queryId][`${index}`]})`,
+          backgroundImage: `url(${images[queryId].screencaptures[`${index}`]})`,
           backgroundSize: 'cover',
         }}
       >
@@ -198,6 +203,30 @@ const PersonalityQuizPage = (props) => {
           <Typography className={classes.gridImageItemCaption}>
             image courtesy of screenmusings.org
           </Typography>
+        </a>
+      </div>
+    )
+  }
+
+  const sketchFor = () => {
+    if (!characters.map((c) => c.Index).includes(queryId)) {
+      return ''
+    }
+    return (
+      <div
+        className={classes.gridImageItem}
+        style={{
+          backgroundImage: `url(${images[queryId].sketch})`,
+          backgroundSize: 'contain',
+        }}
+      >
+        <a
+          style={{ textDecoration: 'none' }}
+          href='https://www.instagram.com/inthekevinwoods/'
+          target='_blank'
+          rel='noreferrer'
+        >
+          <Typography className={classes.gridImageItemCaption}>art by kevin woods</Typography>
         </a>
       </div>
     )
@@ -218,6 +247,10 @@ const PersonalityQuizPage = (props) => {
   }
 
   useEffect(handleDirectNavigation, [])
+
+  if (!isShowtime()) {
+    return <></>
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -355,10 +388,7 @@ const PersonalityQuizPage = (props) => {
                 </div>
               </Grid>
               <Grid item xs={12} md={8}>
-                <div
-                  className={classes.gridImageItem}
-                  style={{ backgroundImage: `url(${placeholder})` }}
-                ></div>
+                {sketchFor()}
               </Grid>
               <Grid item xs={12} md={8} xl={3}>
                 {screencapImageFor(1)}

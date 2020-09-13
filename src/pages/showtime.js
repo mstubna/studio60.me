@@ -1,10 +1,11 @@
 import 'typeface-montserrat'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'gatsby'
 import { Helmet } from 'react-helmet'
 import { CssBaseline, Grid, Typography } from '@material-ui/core'
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
 import { fade } from '@material-ui/core/styles/colorManipulator'
+import { isShowtime } from '../utilities'
 import Header from '../components/header'
 import theme from '../components/theme'
 import icon from '../images/icon.png'
@@ -75,19 +76,35 @@ const useStyles = makeStyles({
   },
 })
 
-const IndexPage = () => {
+const ShowtimePage = () => {
   const classes = useStyles()
+
+  useEffect(() => {
+    if (!isShowtime()) {
+      window.location = '/'
+    }
+  }, [])
+
+  if (!isShowtime()) {
+    return <></>
+  }
 
   return (
     <ThemeProvider theme={theme}>
       <Helmet>
         <title>Studio60.me</title>
         <meta property='og:title' content='Studio60.me' />
-        <meta property='og:description' content='Studio 60 name generator' />
+        <meta
+          property='og:description'
+          content='Studio 60 fansite --- The George Lucas Talk Show'
+        />
         <meta property='og:image' content={`https://studio60.me${icon}`} />
         <meta property='og:url' content='https://studio60.me' />
         <meta name='twitter:title' content='Studio60.me' />
-        <meta name='twitter:description' content='Studio 60 name generator' />
+        <meta
+          name='twitter:description'
+          content='Studio 60 fansite --- The George Lucas Talk Show'
+        />
         <meta name='twitter:image' content={`https://studio60.me${icon}`} />
         <meta name='twitter:card' content='summary' />
       </Helmet>
@@ -189,4 +206,4 @@ const IndexPage = () => {
   )
 }
 
-export default IndexPage
+export default ShowtimePage
