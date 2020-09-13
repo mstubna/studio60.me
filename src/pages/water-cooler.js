@@ -3,20 +3,11 @@ import React, { useState, useEffect, useRef } from 'react'
 import { graphql } from 'gatsby'
 import { makeStyles, ThemeProvider, duration } from '@material-ui/core/styles'
 import { Helmet } from 'react-helmet'
-import {
-  Button,
-  CssBaseline,
-  Fade,
-  Grid,
-  Slider,
-  Slide,
-  TextField,
-  Typography,
-} from '@material-ui/core'
+import { Button, CssBaseline, Grid, Slider, Slide, TextField, Typography } from '@material-ui/core'
 import Header from '../components/header'
 import theme from '../components/theme'
 
-import { hashStr, getSketchName, parseData } from '../data'
+import { getSketchName, parseData } from '../data'
 import icon from '../images/icon.png'
 import '../index.css'
 
