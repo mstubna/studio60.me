@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { DateTime } from 'luxon'
 
 const useAnimationFrame = (callback) => {
@@ -21,22 +21,6 @@ const useAnimationFrame = (callback) => {
   }, [])
 }
 
-const useIsShowtime = () => {
-  const [elapsed, setElapsed] = useState(0)
-
-  useAnimationFrame((deltaTime) => {
-    setElapsed((prevElapsed) => prevElapsed + deltaTime)
-  })
-
-  useEffect(() => {
-    if (isShowtime()) {
-      window.location = '/showtime'
-    } else {
-      window.location = '/countdown'
-    }
-  }, [elapsed])
-}
-
 const showtime = DateTime.fromISO('2020-09-20T09:00:00', { zone: 'America/New_York' })
 const quote = 'Time flies like an arrow, fruit flies like a banana.'
 const quoteAuthor = 'GMarx'
@@ -54,6 +38,10 @@ const isShowtime = () => {
   return getNow() > showtime
 }
 
+const isTest = () => {
+  return typeof window !== 'undefined' && window.location.hostname !== 'studio60.me'
+}
+
 export {
   useAnimationFrame,
   showtime,
@@ -62,5 +50,5 @@ export {
   getNow,
   getHoursMinutesSecondsUntilShowtime,
   isShowtime,
-  useIsShowtime,
+  isTest,
 }

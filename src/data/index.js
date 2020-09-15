@@ -48,6 +48,10 @@ const getStudio60Character = (name, characters, questions, answers) => {
   return faker.random.arrayElement(possibleCharacters)
 }
 
+const getRandomStudio60Character = (characters) => {
+  return faker.random.arrayElement(characters)
+}
+
 const getStudio60CharacterByIndex = (characters, index) => {
   return characters[index]
 }
@@ -60,27 +64,32 @@ const getRandomQuote = (character) => {
   return faker.random.arrayElement(character.Quotes.split('\n'))
 }
 
-const getSketchName = (name, christian, science, locations) => {
+const getRandomLocation = (name, science, locations) => {
+  return faker.random.arrayElement(locations)
+}
+
+const getSketch = (name, christian, science, locations, characters) => {
   if (christian > science) {
-    return { part1: 'Nicholas Cage meets', part2: name }
+    return {
+      part1: 'Nicholas Cage meets',
+      part2: name,
+      character: getStudio60CharacterByIndex(characters, '3'),
+    }
   }
+
+  faker.seed(hashStr(`${name}${science}`))
   return {
     part1: 'Peripheral Vision Man goes to',
     part2: getRandomLocation(name, science, locations),
+    character: getRandomStudio60Character(characters),
   }
-}
-
-const getRandomLocation = (name, science, locations) => {
-  faker.seed(hashStr(`${name}${science}`))
-  return faker.random.arrayElement(locations)
 }
 
 export {
   getStudio60Character,
   getStudio60CharacterByIndex,
-  getRandomLocation,
   getRandomQuote,
-  getSketchName,
+  getSketch,
   hashStr,
   parseData,
 }

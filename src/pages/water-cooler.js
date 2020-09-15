@@ -6,9 +6,10 @@ import { Helmet } from 'react-helmet'
 import { Button, CssBaseline, Grid, Slider, Slide, TextField, Typography } from '@material-ui/core'
 import Header from '../components/header'
 import theme from '../components/theme'
-import { isShowtime } from '../utilities'
-import { getSketchName, parseData } from '../data'
+import { isShowtime, isTest } from '../utilities'
+import { getSketch, parseData } from '../data'
 import icon from '../images/icon.png'
+import { images } from '../images/characterImages'
 import '../index.css'
 
 const useStyles = makeStyles({
@@ -51,6 +52,9 @@ const useStyles = makeStyles({
       fontSize: 24,
     },
   },
+  sketchContainer: {
+    padding: 20,
+  },
   part0: {
     fontSize: '1rem',
     [theme.breakpoints.up('sm')]: {
@@ -60,6 +64,31 @@ const useStyles = makeStyles({
   part1: {},
   part2: {
     fontWeight: 'bold',
+  },
+  gridImageItem: {
+    display: 'flex',
+    height: '100%',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    minHeight: 500,
+    width: '100%',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    backgroundPosition: 'center',
+  },
+  gridImageItemTitle: {
+    padding: '2px 10px',
+    fontSize: '1.2rem',
+    color: '#fbfbfbc3',
+    backgroundColor: '#2b2b2b9d',
+  },
+  gridImageItemCaption: {
+    padding: '2px 10px',
+    fontSize: '1.2rem',
+    color: '#fbfbfbc3',
+    backgroundColor: '#2b2b2b9d',
+    textAlign: 'right',
   },
   buttonGroup: {
     marginTop: 20,
@@ -90,17 +119,17 @@ const usePrevious = (value) => {
 const WaterCoolerPage = (props) => {
   const classes = useStyles()
   useEffect(() => {
-    if (!isShowtime()) {
+    if (!isShowtime() && !isTest()) {
       window.location = '/'
     }
   }, [])
-  const { locations } = parseData(props.data)
+  const { locations, characters } = parseData(props.data)
   const [step, setStep] = useState(0)
   const prevStep = usePrevious(step)
   const [name, setName] = useState('')
   const [christian, setChristian] = useState(0)
   const [science, setScience] = useState(0)
-  const [sketchName, setSketchName] = useState('')
+  const [sketch, setSketch] = useState({ part1: '', part2: '', character: null })
 
   const handleNameChange = (e) => {
     setName(e.target.value)
@@ -124,7 +153,7 @@ const WaterCoolerPage = (props) => {
 
   const handleReset = () => {
     setName('')
-    setSketchName('')
+    setSketch({ part1: '', part2: '', character: null })
     setChristian(0)
     setScience(0)
     setStep(0)
@@ -139,15 +168,42 @@ const WaterCoolerPage = (props) => {
 
   const handleNext = () => {
     if (step < 1) {
-      const sketchName = getSketchName(name, christian, science, locations)
-      setSketchName(sketchName)
+      const sketch = getSketch(name, christian, science, locations, characters)
+      setSketch(sketch)
       setStep(step + 1)
       return
     }
     handleReset()
   }
 
-  if (!isShowtime()) {
+  const sketchFor = (character) => {
+    if (!character) {
+      return ''
+    }
+    return (
+      <div
+        className={classes.gridImageItem}
+        style={{
+          backgroundImage: `url(${images[character.Index].sketch})`,
+          backgroundSize: 'cover',
+        }}
+      >
+        <Typography className={classes.gridImageItemTitle}>{character.Character}</Typography>
+        <a
+          style={{ textDecoration: 'none' }}
+          href='https://www.instagram.com/inthekevinwoods/'
+          target='_blank'
+          rel='noreferrer'
+        >
+          <Typography className={classes.gridImageItemCaption}>
+            art by <strong>kevin woods</strong>
+          </Typography>
+        </a>
+      </div>
+    )
+  }
+
+  if (!isShowtime() && !isTest()) {
     return <></>
   }
 
@@ -264,22 +320,45 @@ const WaterCoolerPage = (props) => {
             unmountOnExit
             exit={false}
           >
-            <Grid container direction='column' justify='center' alignItems='center' item xs={10}>
-              <div style={{ textAlign: 'center', marginBottom: 40 }}>
-                <Typography className={classes.part0} variant='body2'>
-                  Your Studio 60 sketch is:
-                </Typography>
-              </div>
-              <div style={{ textAlign: 'center' }}>
-                <Typography variant='h6' display='inline' className={classes.part1}>
-                  {sketchName && sketchName.part1}
-                </Typography>
-                ...
-                <br />
-                <Typography variant='h6' display='inline' className={classes.part2}>
-                  {sketchName && sketchName.part2}
-                </Typography>
-              </div>
+            <Grid container direction='row' justify='center' alignItems='center'>
+              <Grid
+                className={classes.sketchContainer}
+                container
+                item
+                direction='column'
+                justify='center'
+                alignItems='center'
+                xs={12}
+                sm={6}
+              >
+                <div style={{ textAlign: 'center', marginBottom: 40 }}>
+                  <Typography className={classes.part0} variant='body2'>
+                    Your Studio 60 sketch is:
+                  </Typography>
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <Typography variant='h6' display='inline' className={classes.part1}>
+                    {sketch && sketch.part1}
+                  </Typography>
+                  ...
+                  <br />
+                  <Typography variant='h6' display='inline' className={classes.part2}>
+                    {sketch && sketch.part2}
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid
+                className={classes.sketchContainer}
+                container
+                item
+                direction='column'
+                justify='center'
+                alignItems='center'
+                xs={12}
+                sm={6}
+              >
+                {sketch && sketchFor(sketch.character)}
+              </Grid>
             </Grid>
           </Slide>
         </Grid>

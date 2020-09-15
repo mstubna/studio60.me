@@ -15,7 +15,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { makeStyles, ThemeProvider, duration } from '@material-ui/core/styles'
-import { isShowtime } from '../utilities'
+import { isShowtime, isTest } from '../utilities'
 import { useQueryParam, StringParam } from 'use-query-params'
 import { isEmpty } from 'lodash'
 import Header from '../components/header'
@@ -76,7 +76,7 @@ const useStyles = makeStyles({
   },
   gridImageItemCaption: {
     padding: '2px 10px',
-    fontSize: '0.6rem',
+    fontSize: '1.2rem',
     color: '#fbfbfbc3',
     backgroundColor: '#2b2b2b9d',
   },
@@ -122,7 +122,7 @@ const usePrevious = (value) => {
 const PersonalityQuizPage = (props) => {
   const classes = useStyles()
   useEffect(() => {
-    if (!isShowtime()) {
+    if (!isShowtime() && !isTest()) {
       window.location = '/'
     }
   }, [])
@@ -226,7 +226,9 @@ const PersonalityQuizPage = (props) => {
           target='_blank'
           rel='noreferrer'
         >
-          <Typography className={classes.gridImageItemCaption}>art by kevin woods</Typography>
+          <Typography className={classes.gridImageItemCaption}>
+            art by <strong>kevin woods</strong>
+          </Typography>
         </a>
       </div>
     )
@@ -248,7 +250,7 @@ const PersonalityQuizPage = (props) => {
 
   useEffect(handleDirectNavigation, [])
 
-  if (!isShowtime()) {
+  if (!isShowtime() && !isTest()) {
     return <></>
   }
 
