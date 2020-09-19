@@ -6,7 +6,6 @@ import { Helmet } from 'react-helmet'
 import { Button, CssBaseline, Grid, Slider, Slide, TextField, Typography } from '@material-ui/core'
 import Header from '../components/header'
 import theme from '../components/theme'
-import { isShowtime, isTest } from '../utilities'
 import { getSketch, parseData } from '../data'
 import icon from '../images/icon.png'
 import { images } from '../images/characterImages'
@@ -118,11 +117,6 @@ const usePrevious = (value) => {
 
 const WaterCoolerPage = (props) => {
   const classes = useStyles()
-  useEffect(() => {
-    if (!isShowtime() && !isTest()) {
-      window.location = '/'
-    }
-  }, [])
   const { locations, characters } = parseData(props.data)
   const [step, setStep] = useState(0)
   const prevStep = usePrevious(step)
@@ -201,10 +195,6 @@ const WaterCoolerPage = (props) => {
         </a>
       </div>
     )
-  }
-
-  if (!isShowtime() && !isTest()) {
-    return <></>
   }
 
   return (

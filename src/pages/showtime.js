@@ -1,11 +1,10 @@
 import 'typeface-montserrat'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'gatsby'
 import { Helmet } from 'react-helmet'
 import { CssBaseline, Grid, Typography } from '@material-ui/core'
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
 import { fade } from '@material-ui/core/styles/colorManipulator'
-import { isShowtime } from '../utilities'
 import Header from '../components/header'
 import theme from '../components/theme'
 import icon from '../images/icon.png'
@@ -78,16 +77,6 @@ const useStyles = makeStyles({
 
 const ShowtimePage = () => {
   const classes = useStyles()
-
-  useEffect(() => {
-    if (!isShowtime()) {
-      window.location = '/'
-    }
-  }, [])
-
-  if (!isShowtime()) {
-    return <></>
-  }
 
   return (
     <ThemeProvider theme={theme}>

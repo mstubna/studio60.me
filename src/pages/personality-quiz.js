@@ -15,9 +15,9 @@ import {
   Typography,
 } from '@material-ui/core'
 import { makeStyles, ThemeProvider, duration } from '@material-ui/core/styles'
-import { isShowtime, isTest } from '../utilities'
 import { useQueryParam, StringParam } from 'use-query-params'
 import { isEmpty } from 'lodash'
+import { TwitterIcon, TwitterShareButton } from 'react-share'
 import Header from '../components/header'
 import theme from '../components/theme'
 import icon from '../images/icon.png'
@@ -55,12 +55,21 @@ const useStyles = makeStyles({
   button: {
     marginLeft: 14,
     marginRight: 14,
-    marginBottom: 8,
     paddingRight: 30,
     paddingLeft: 30,
     minWidth: 100,
     [theme.breakpoints.up('sm')]: {
       minWidth: 180,
+    },
+  },
+  shareButton: {
+    border: 'none',
+    padding: 0,
+    height: 56,
+    margin: '0 14px',
+    cursor: 'pointer',
+    '&:focus': {
+      outline: 'none',
     },
   },
   gridImageItem: {
@@ -121,18 +130,13 @@ const usePrevious = (value) => {
 
 const PersonalityQuizPage = (props) => {
   const classes = useStyles()
-  useEffect(() => {
-    if (!isShowtime() && !isTest()) {
-      window.location = '/'
-    }
-  }, [])
   const { characters, questions } = parseData(props.data)
   const [queryId, setQueryId] = useQueryParam('id', StringParam)
   const [step, setStep] = useState(0)
   const prevStep = usePrevious(step)
   const [name, setName] = useState('')
   const [answers, setAnswers] = useState([])
-  const [studio60Character, setStudio60Character] = useState()
+  const studio60Character = getStudio60CharacterByIndex(characters, Number(queryId))
 
   const handleNameChange = (e) => {
     setName(e.target.value)
@@ -161,7 +165,6 @@ const PersonalityQuizPage = (props) => {
     if (step === questions.length) {
       const character = getStudio60Character(name, characters, questions, answers)
       setQueryId(character.Index)
-      setStudio60Character(character)
       setStep(questions.length + 1)
       return
     }
@@ -173,7 +176,6 @@ const PersonalityQuizPage = (props) => {
     setName('')
     setAnswers([])
     setQueryId(undefined)
-    setStudio60Character()
   }
 
   const handleAnswer = (index, { target: { value } }) => {
@@ -201,7 +203,7 @@ const PersonalityQuizPage = (props) => {
           rel='noreferrer'
         >
           <Typography className={classes.gridImageItemCaption}>
-            image courtesy of screenmusings.org
+            screencap by <strong>screenmusings.org</strong>
           </Typography>
         </a>
       </div>
@@ -239,36 +241,38 @@ const PersonalityQuizPage = (props) => {
     if (!queryId) {
       return
     }
-    const character = getStudio60CharacterByIndex(characters, Number(queryId))
-    if (!character) {
+    if (!studio60Character) {
       handleReset()
       return
     }
-    setStudio60Character(character)
     setStep(questions.length + 1)
   }
 
   useEffect(handleDirectNavigation, [])
 
-  if (!isShowtime() && !isTest()) {
-    return <></>
-  }
+  const description = studio60Character
+    ? `Check out my Studio 60 character - ${studio60Character.Character}`
+    : 'Studio 60 name generator'
+  const image = studio60Character
+    ? `https://studio60.me${images[queryId].sketch}`
+    : `https://studio60.me${icon}`
+  const url = typeof window !== 'undefined' ? window.location.href : ''
 
   return (
     <ThemeProvider theme={theme}>
       <Helmet>
         <title>Studio60.me</title>
         <meta property='og:title' content='Studio60.me' />
-        <meta property='og:description' content='Studio 60 name generator' />
-        <meta property='og:image' content={`https://studio60.me${icon}`} />
-        <meta property='og:url' content='https://studio60.me' />
+        <meta property='og:description' content={description} />
+        <meta property='og:image' content={image} />
+        <meta property='og:url' content={url} />
         <meta name='twitter:title' content='Studio60.me' />
-        <meta name='twitter:description' content='Studio 60 name generator' />
-        <meta name='twitter:image' content={`https://studio60.me${icon}`} />
+        <meta name='twitter:description' content={description} />
+        <meta name='twitter:image' content={image} />
         <meta name='twitter:card' content='summary' />
       </Helmet>
       <CssBaseline />
-      <div style={{ overflow: 'hidden' }}>
+      <div style={{ overflow: 'hidden', marginBottom: 20 }}>
         <Header showQuote={true} />
         <Grid
           className={classes.transitionContainer}
@@ -447,6 +451,16 @@ const PersonalityQuizPage = (props) => {
           >
             {step === questions.length + 1 ? 'Start over' : 'Next'}
           </Button>
+          {step === questions.length + 1 && studio60Character && (
+            <TwitterShareButton
+              className={classes.shareButton}
+              url={url}
+              title={`Check out my Studio 60 character - ${studio60Character.Character}`}
+              resetButtonStyle={false}
+            >
+              <TwitterIcon borderRadius={4} size={54} />
+            </TwitterShareButton>
+          )}
         </Grid>
       </div>
     </ThemeProvider>
